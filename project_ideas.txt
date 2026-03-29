@@ -1,0 +1,193 @@
+ML GOOGLE PLAYSTORE - PROJECT IDEAS (READY TO USE)
+Date: 2026-03-29
+
+==================================================
+1) MAIN PROJECT CONCEPT
+==================================================
+Title:
+Google Play App Success Predictor and Rating Estimator
+
+Simple objective:
+Use cleaned Google Play Store data to predict:
+A) if an app can be considered successful (classification), and/or
+B) expected user rating (regression).
+
+Why this is good:
+- Real-world dirty dataset (fits requirement).
+- Clear data cleaning story.
+- Can show both classification and regression learning.
+- Easy to explain to panel/instructor.
+
+==================================================
+2) OPTION A (RECOMMENDED): CLASSIFICATION
+==================================================
+Problem statement:
+"Can we predict if an app will be HIGH-INSTALL (successful) or not?"
+
+Target:
+Create binary target named success_label.
+Example:
+- success_label = 1 if Installs >= 100000
+- success_label = 0 if Installs < 100000
+
+Possible features:
+- Category
+- Reviews
+- Size (numeric MB)
+- Type (Free/Paid)
+- Price (numeric)
+- Content Rating
+- Genres
+- Android Ver (encoded)
+- Current Ver (optional)
+
+Models to try:
+- Logistic Regression (baseline)
+- Decision Tree Classifier
+- Random Forest Classifier
+- KNN Classifier
+
+Evaluation:
+- Accuracy
+- Confusion Matrix
+- Precision/Recall/F1 (optional but strong)
+
+What to report:
+- Best model
+- Top important features (especially for tree-based models)
+- Example prediction output with confidence
+
+==================================================
+2A) OTHER CLASSIFICATION OPTIONS (IF OPTION A IS TOO SIMILAR)
+==================================================
+Pick one of these if your current project already does HIT/MISS installs.
+
+Option A1: Rating Quality Class
+Problem statement:
+"Can we classify if an app has HIGH-RATING quality or LOW-RATING quality?"
+Target example:
+- rating_class = 1 if Rating >= 4.2
+- rating_class = 0 if Rating < 4.2
+Why different:
+- Focus is app quality perception, not install count.
+
+Option A2: Paid vs Free Class
+Problem statement:
+"Can we predict whether an app is likely FREE or PAID based on its metadata?"
+Target example:
+- price_class = 1 if Type = Paid
+- price_class = 0 if Type = Free
+Why different:
+- Business model classification angle.
+
+Option A3: Content Safety Class
+Problem statement:
+"Can we classify if an app is FAMILY-FRIENDLY or MATURE-AUDIENCE?"
+Target example:
+- content_class = 1 for Everyone / Everyone 10+
+- content_class = 0 for Teen / Mature 17+ / Adults only
+Why different:
+- Audience suitability perspective.
+
+Option A4: Multi-Class Install Tier
+Problem statement:
+"Can we classify apps into install tiers instead of just HIT/MISS?"
+Target example:
+- tier 0: < 10K installs
+- tier 1: 10K to < 100K
+- tier 2: 100K to < 1M
+- tier 3: >= 1M
+Why different:
+- More detailed than binary success.
+
+Suggested if you want easiest pivot:
+- Use Option A1 (Rating Quality Class), because it is easy to explain and clearly not the same as your current install-success predictor.
+
+==================================================
+3) OPTION B (BONUS): REGRESSION
+==================================================
+Problem statement:
+"Can we estimate app User Rating from app metadata?"
+
+Target:
+- Rating (continuous value, e.g., 1.0 to 5.0)
+
+Models to try:
+- Linear Regression (baseline)
+- Decision Tree Regressor
+- Random Forest Regressor
+
+Evaluation:
+- MAE
+- MSE
+- R2 Score
+
+Important note:
+Rating can be noisy and affected by many external factors, so regression may score lower.
+This is still valid and realistic.
+
+==================================================
+4) CLEANING CHECKLIST (CAN USE IN REPORT)
+==================================================
+- Remove duplicate rows.
+- Handle missing values in Rating, Size, Type, Content Rating, Current Ver, Android Ver.
+- Convert Installs from text to numeric:
+  - remove "," and "+"
+- Convert Price from "$4.99" format to float.
+- Convert Reviews to numeric.
+- Standardize Size units (k/M) to one numeric unit.
+- Encode categorical columns (One-Hot or Label Encoding).
+- Remove obvious outliers if needed (explain criteria).
+
+==================================================
+5) MINIMUM NOTEBOOK FLOW
+==================================================
+1. Load dataset
+2. Show head(), info(), describe()
+3. Show missing values + duplicates
+4. Data cleaning steps
+5. Feature engineering + encoding
+6. Train-test split
+7. Train at least 1 model (better: compare 3-4 models)
+8. Evaluate + visualize results
+9. Interpret findings
+10. Final conclusion and limitations
+
+==================================================
+6) VISUALS YOU CAN ADD
+==================================================
+- Top categories by app count
+- Rating distribution histogram
+- Installs distribution (log scale if needed)
+- Free vs Paid comparison
+- Feature importance bar chart (Random Forest)
+- Confusion matrix heatmap (for classification)
+- Predicted vs Actual scatter (for regression)
+
+==================================================
+7) SUGGESTED TEAM SPLIT
+==================================================
+Member 1: Data cleaning + preprocessing
+Member 2: EDA + visualizations
+Member 3: Classification model training + evaluation
+Member 4: Regression model + comparison + presentation writeup
+
+==================================================
+8) QUICK DEFENSE SCRIPT (TAGLISH)
+==================================================
+"Our dataset is naturally dirty, so we first performed full cleaning: missing values,
+duplicate removal, and numeric conversion of Installs and Price. After preprocessing,
+we trained a classification model to predict app success using a 100k installs threshold.
+We compared multiple algorithms and selected the best based on evaluation metrics.
+As an additional task, we explored regression to estimate user rating. This gave us
+insight on both categorical and continuous prediction tasks in one real-world dataset."
+
+==================================================
+9) FINAL RECOMMENDATION
+==================================================
+If time is limited:
+- Prioritize classification (app success HIT/MISS), because it is easier to explain,
+  directly tied to your app success predictor output, and usually gives cleaner results.
+- Add regression as bonus/extension to show deeper ML understanding.
+
+End of file.
