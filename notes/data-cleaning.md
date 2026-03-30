@@ -15,8 +15,8 @@ This notes documents the things we do for cleaning the data.
     - Type: Type of the app (Free or Paid).
     - Price: Price of the app (if it's a paid app).
     - Content Rating: Age group for which the app is suitable.
-    - Genres: Genre(s) of the app.
-    - Last Updated: Date when the app was last updated.
+    - Genres: Genre of the app.
+    - Last Updated: Date when the app, was last updated.
     - Current Ver: Current version of the app.
     - Android Ver: Minimum Android version required to run the app.
 
@@ -150,7 +150,7 @@ Then we can apply this function to the Size column.
 df['Size'] = df['Size'].apply(convert_size)
 ```
 
-The `apply` method is used to apply a function along an axis of the DataFrame. In this case, we are applying the `convert_size` function to each value in the 'Size' column.
+The `apply` method is used to apply a function along an axis of the data frame. In this case, we are applying the `convert_size` function to each value in the 'Size' column.
 
 
 ### Filtering Data
