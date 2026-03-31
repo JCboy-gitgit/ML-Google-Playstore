@@ -1,0 +1,61 @@
+FINAL SCRIPT - CLA (DATA CLEANING) - FULL DETAILS
+
+[Greeting & Introduction]
+Good day everyone, I’m Cla. I’ll be walking you through our Data Cleaning process. 
+Machine learning models are only as good as the data you feed them. Before we could do our PCA and Random Forest modeling, we had to ensure our Google Play Store dataset was completely clean, consistent, and ready for computation. Here are the exact steps we took.
+
+[1. Handling Duplicates]
+First, we loaded the dataset and checked for missing values and data types. We immediately noticed duplicated entries for some apps. We used pandas to drop these duplicates based on the "App" name column, keeping only unique apps, and we reset the index to keep our dataframe organized.
+
+[2. Cleaning Ratings & Reviews]
+This part required multiple steps to ensure logical consistency:
+- Outliers: We found several rows where the Rating was greater than 5. Upon checking, these were extremely shifted entries that broke the structure, so we completely dropped those specific outlier rows from the dataset.
+- Data Type: We converted the 'Reviews' column strictly into integer format.
+- Logical Correction: We found apps that had zero reviews but still had a rating. This is realistically impossible, so we forced the Rating to 0 for any app that had 0 reviews.
+- Missing Values: For the remaining missing ratings, we applied a "forward fill" (ffill) method to impute the data without distorting the existing distribution.
+
+[3. Cleaning Price]
+The 'Price' column was originally text because it included dollar signs ($). We stripped out the dollar sign using string replacement and converted the entire column to numeric format, coercing any errors into NaN.
+
+[4. Cleaning Installs]
+The 'Installs' column had formatting inconsistencies and symbols. 
+- We first corrected redundant values, replacing "0+" with "1+". 
+- Then, we removed the plus signs (+) and commas (,) from the strings. 
+- Finally, we converted the cleaned strings into a numeric format so it could be mathematically scaled later.
+
+[5. Standardizing Size]
+The 'Size' column had mixed units—some in Megabytes (M) and some in kilobytes (k). 
+- We wrote a custom function to standardize everything into Kilobytes by multiplying the Megabyte entries by 1,024. 
+- Some entries were labeled as "Varies with device". We left them as they were for this strict cleaning phase, knowing we would specifically handle them using median imputation during the Random Forest modeling preparation.
+
+[6. Checking Type Consistency]
+We ran a logical consistency check between 'Type' (Free/Paid) and the 'Price' column. We found several conflicting entries! 
+To resolve this, we enforced a strict rule:
+- If the Price is greater than 0, we explicitly set the Type to 'Paid'.
+- If the Price is exactly 0, we explicitly set the Type to 'Free'.
+This instantly resolved any NaN or incorrect type values.
+
+[7. Cleaning Content Rating]
+We checked the 'Content Rating' column and found some redundant or rare labels. To make our categories cleaner for the model:
+- We replaced "Adults only 18+" with "Mature 17+".
+- We replaced "Unrated" with "Everyone".
+
+[8. Final Output & Feature Selection]
+As a final check, we isolated the features that actually matter. We dropped columns like 'Current Ver', 'Android Ver', 'Genres' (which was just redundant with Category), and 'Last Updated' because they were not relevant to our analysis.
+
+We then saved this perfectly organized data as "googleplaystore_cleaned.csv", which served as the solid foundation for our models.
+
+Thank you. I will now pass the floor to Nicko and Franniel to explain how we utilized this clean data in our PCA and Random Forest models.
+
+
+---
+QUICK CHEAT SHEET FOR POSSIBLE QUESTIONS:
+
+Q: Why drop the apps with Rating > 5 instead of fixing them?
+A: Because in the dataframe, those specific rows were structurally shifted to the left (Data Entry error), making the entire row's data misaligned and unusable. Dropping them was the safest choice.
+
+Q: Why didn't you fill "Varies with device" right away in the Size column?
+A: We wanted to handle that carefully later depending on the category. In our model phase, we grouped them by Category and filled those missing sizes using the median size of that specific app category to avoid bias.
+
+Q: Why replace 0+ with 1+ in Installs?
+A: It streamlines the categories and prevents mathematical errors later when we applied logarithmic transformations (like log1p) during the PCA phase.

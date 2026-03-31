@@ -1,0 +1,54 @@
+FINAL SCR - CLA (DATA CLEANING)
+
+Good day everyone, I’m Cla, and I’ll discuss our data cleaning process.
+
+Before building any model, we first cleaned the raw Google Play Store dataset because machine learning performance depends heavily on data quality. In our raw data, we found common issues: duplicated entries, missing values, inconsistent labels, and non-numeric formats.
+
+First, we loaded the dataset and performed initial inspection using missing-value checks and data type checks.
+
+Next, we removed duplicated apps based on app name, then reset the index so the dataset structure remained clean and consistent.
+
+For Rating and Reviews, we handled invalid and inconsistent values:
+- We identified rating outliers, especially values above 5.
+- We converted Reviews into numeric format.
+- If an app had zero reviews, we set rating to zero for consistency.
+- Then we filled remaining missing ratings using forward fill.
+
+For Price, we removed the dollar sign and converted the column to numeric so it could be used in computation and modeling.
+
+For Installs, we standardized values such as 0+ and 1+, removed symbols like plus signs and commas, and converted the column into numeric values.
+
+For Size, we standardized units by converting MB to KB and added handling for entries like "Varies with device" so they would not break numeric processing.
+
+For Type, we applied a consistency rule based on Price:
+- If Price is greater than 0, Type should be Paid.
+- If Price is 0, Type should be Free.
+This fixed inconsistent and missing Type values.
+
+For Content Rating, we standardized uncommon labels, such as replacing "Adults only 18+" with "Mature 17+" and "Unrated" with "Everyone".
+
+After that, we performed a final quality check, dropped less relevant columns such as Current Ver, Android Ver, Genres, and Last Updated, then saved the cleaned dataset.
+
+In summary, our cleaning process reduced noise, improved consistency, and made the dataset reliable for PCA and Random Forest in the next part of our project.
+
+Thank you, and I’ll now pass the presentation to Nicko and Franniel for model and results.
+
+
+SHORT BACKUP VERSION (30-40 SECONDS)
+
+Hi, I’m Cla. For data cleaning, I removed duplicate apps, fixed invalid ratings, converted Reviews, Price, and Installs into numeric format, standardized Size values, corrected Type based on Price consistency rules, and standardized Content Rating labels. After final checks, we dropped less relevant columns and saved the cleaned dataset. This step made our data more reliable for PCA and Random Forest modeling.
+
+
+PANEL Q&A CHEAT SHEET (OPTIONAL)
+
+Q: Why is data cleaning important before modeling?
+A: Because model quality depends on data quality. Dirty data can cause misleading patterns and weaker predictions.
+
+Q: Why convert Price and Installs to numeric?
+A: PCA and machine learning algorithms require numeric inputs for proper scaling and computation.
+
+Q: Why adjust Type based on Price?
+A: It enforces logical consistency: paid apps should have price > 0, and free apps should have price = 0.
+
+Q: Any limitations in your cleaning?
+A: Yes. Some imputations, like forward fill, introduce assumptions. That is why we documented all cleaning decisions before interpreting results.
