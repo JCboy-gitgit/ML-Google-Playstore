@@ -1,0 +1,119 @@
+CLA PRESENTATION SCRIPT - DATA CLEANING (TAGLISH VERSION)
+
+PART 1: MAIN SPEAKING SCRIPT (CASUAL TAGLISH)
+
+Hi everyone, I’m Cla, and I’ll present our data cleaning process.
+
+Before tayo nag-modeling, chineck muna namin yung raw Google Play Store dataset. Napansin namin na may common data quality issues tulad ng duplicates, missing values, at inconsistent formats. Importante ito ayusin kasi kapag dirty ang data, magiging unreliable din yung model results.
+
+Una, ni-load namin yung dataset at nag-run ng initial checks tulad ng missing values per column at data types.
+
+Sunod, nag-clean kami ng duplicated apps. May mga app names na paulit-ulit, so nag-drop kami ng duplicates based on App name, then nire-reset namin yung index para maayos ulit yung dataframe.
+
+For Rating and Reviews:
+- In-identify namin yung invalid ratings, especially values greater than 5.
+- Inayos din namin ang Reviews by converting it to numeric/integer type.
+- For entries na zero ang reviews, sinet namin yung rating to 0 para consistent.
+- Yung remaining missing ratings, ni-fill namin gamit forward fill.
+
+For Price:
+- Tinanggal namin yung dollar sign.
+- Then cinonvert namin to numeric para magamit sa analysis at modeling.
+
+For Installs:
+- Ni-standardize namin yung values like 0+ and 1+.
+- Tinanggal namin yung plus signs at commas.
+- Then converted to numeric values.
+
+For Size:
+- Ni-standardize namin yung units by converting MB to KB para iisang scale.
+- Yung "Varies with device" entries, hiningan ng special handling para hindi masira yung numeric processing.
+
+For Type:
+- Nag consistency check kami based on Price.
+- Kapag Price > 0, dapat Paid.
+- Kapag Price = 0, dapat Free.
+- So inayos namin yung inconsistent at missing Type values gamit rule na yan.
+
+For Content Rating:
+- Ni-standardize namin yung rare labels, for example:
+  - "Adults only 18+" to "Mature 17+"
+  - "Unrated" to "Everyone"
+
+Final step:
+- Nag final check kami ng missing values.
+- Nag-drop kami ng less relevant columns tulad ng Current Ver, Android Ver, Genres, at Last Updated.
+- Then sinave namin yung cleaned dataset for the next stage (modeling).
+
+So in summary, this cleaning step reduced noise, fixed inconsistencies, and made the dataset more reliable for PCA and Random Forest.
+
+Thank you, and now I’ll pass the presentation to Nicko and Franniel for model and results.
+
+
+PART 2: SLIDE-BY-SLIDE SCRIPT (MATCHED TO NOTEBOOK FLOW)
+
+Slide 1 - Data Cleaning Overview
+"Ako yung assigned sa data cleaning. Goal namin dito is gawing consistent, complete, and model-ready yung dataset bago mag-analysis at training."
+
+Slide 2 - Initial Inspection
+"Dito, ni-load namin yung CSV and nag-check kami ng missing values and data types para makita agad kung saan ang issues."
+
+Slide 3 - Duplicate Apps
+"May duplicated app entries based on app name, so nag-drop kami ng duplicates and nag-reset ng index para malinis ang records."
+
+Slide 4 - Rating and Reviews Cleaning
+"May outlier ratings na lampas 5, so tinanggal/inayos namin. Cinonvert din namin ang Reviews to numeric. Then for zero reviews, nilagay namin rating as zero, and forward fill for remaining missing ratings."
+
+Slide 5 - Price Cleaning
+"Tinanggal namin yung dollar sign sa Price then converted to numeric para magamit sa computations."
+
+Slide 6 - Installs Cleaning
+"Inayos namin yung formats tulad ng 0+, 1+, may commas at plus signs. After cleanup, converted na siya into numeric installs count."
+
+Slide 7 - Size Cleaning
+"Yung Size may mixed units and may 'Varies with device'. So nag-standardize kami into KB and gumawa ng handling para sa non-standard values."
+
+Slide 8 - Type Consistency Check
+"Cinross-check namin yung Type against Price. Kapag may bayad, dapat Paid; kapag zero price, Free. Inapply namin itong rule to fix inconsistent and missing entries."
+
+Slide 9 - Content Rating Standardization
+"Ni-merge/ni-standardize namin yung rare categories para cleaner and more consistent ang labels."
+
+Slide 10 - Final Output
+"After final checks, nag-drop kami ng columns na hindi critical sa analysis and sinave namin yung cleaned CSV. Ito yung ginamit sa PCA at Random Forest stage."
+
+
+PART 3: PRACTICE Q&A (POSSIBLE PANEL QUESTIONS)
+
+Q1: Bakit importante ang data cleaning bago modeling?
+A: Kasi ang model quality naka-depend sa data quality. Kapag may duplicates, missing values, at wrong formats, pwedeng ma-distort yung learned patterns at bumaba ang accuracy.
+
+Q2: Bakit niyo dinelete ang duplicate apps?
+A: Para maiwasan yung same app na ma-count multiple times, which can bias frequency-based features and model learning.
+
+Q3: Bakit niyo ginawang numeric ang Price at Installs?
+A: Kailangan numeric format para sa statistical analysis, scaling, and machine learning algorithms like PCA and Random Forest.
+
+Q4: Bakit niyo inayos ang Type base sa Price?
+A: Logical consistency rule siya: paid apps should have price > 0, and free apps should have price = 0. This removes contradictory labels.
+
+Q5: Why use forward fill for missing ratings?
+A: Practical approach siya to preserve row count while handling missing values quickly. In our dataset context, this helped us proceed with a complete feature set.
+
+Q6: Bakit may handling for "Varies with device" sa Size?
+A: Kasi non-numeric siya. Kung hindi siya i-handle, mag-eerror or magiging invalid ang transformations and modeling pipeline.
+
+Q7: May limitations ba yung cleaning approach?
+A: Yes. Some imputations like forward fill may introduce assumptions. So we documented our steps and interpreted model results with that in mind.
+
+Q8: Paano niyo nalaman na ready na for modeling?
+A: After cleaning, nag final checks kami: data types were correct, key fields were consistent, and major missing/inconsistent entries were resolved.
+
+
+PART 4: QUICK 30-SECOND VERSION (IF TIME IS SHORT)
+
+"Hi, I’m Cla. For data cleaning, I removed duplicate apps, fixed invalid ratings, converted Reviews, Price, and Installs into numeric, standardized Size values, corrected Type using Price consistency rules, and standardized Content Rating labels. After a final check, we dropped less relevant columns and saved the cleaned dataset. This made our data more reliable for PCA and Random Forest modeling."
+
+
+
+
